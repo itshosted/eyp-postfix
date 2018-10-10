@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.2.36
+
+* bugfix virtual alias maps reload
+
 ## 0.2.35
 
 * added security related options (thanks to [juju4](https://github.com/juju4) for this [PR-63](https://github.com/NTTCom-MS/eyp-postfix/pull/63) - merged with changes)
