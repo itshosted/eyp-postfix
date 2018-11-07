@@ -33,7 +33,7 @@ compatibility_level = <%= @compatibility_level %>
 #
 queue_directory = /var/spool/postfix
 
-<% if defined(@queue_run_delay) -%>
+<% if defined?(@queue_run_delay) -%>
 queue_run_delay = <%= @queue_run_delay %>
 <% end -%>
 <% if defined?(@minimal_backoff_time) -%>
