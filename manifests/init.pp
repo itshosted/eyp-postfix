@@ -13,6 +13,7 @@
 # 55 - smtpd restrictions
 # 60 - content filter
 # 61 - sender_canonical_maps
+# 62 - header_checks
 #
 ###
 #
@@ -83,6 +84,9 @@ class postfix (
                 $smtp_tls_exclude_ciphers            = [],
                 $smtpd_tls_mandatory_ciphers         = undef,
                 $tls_medium_cipherlist               = [],
+                $queue_run_delay                     = undef,
+                $minimal_backoff_time                = undef,
+                $maximal_backoff_time                = undef,
               ) inherits postfix::params {
 
   Exec {

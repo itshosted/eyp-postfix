@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 0.2.37
+
+* added queu related variables:
+  - queue_run_delay
+  - minimal_backoff_time
+  - maximal_backoff_time
+* added **postfix::headercheck**
+
 ## 0.2.36
 
 * bugfix virtual alias maps reload

@@ -33,6 +33,16 @@ compatibility_level = <%= @compatibility_level %>
 #
 queue_directory = /var/spool/postfix
 
+<% if defined(@queue_run_delay) -%>
+queue_run_delay = <%= @queue_run_delay %>
+<% end -%>
+<% if defined?(@minimal_backoff_time) -%>
+minimal_backoff_time = <%= @minimal_backoff_time %>
+<% end -%>
+<% if defined?(@maximal_backoff_time) -%>
+maximal_backoff_time = <%= @maximal_backoff_time %>
+<% end -%>
+
 # The command_directory parameter specifies the location of all
 # postXXX commands.
 #
