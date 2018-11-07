@@ -80,7 +80,7 @@ describe 'postfix class' do
 
     describe file('/etc/postfix/header_checks') do
       it { should be_file }
-      its(:content) { should match '/^Subject:/ WARN' }
+      its(:content) { should match /\/\^Subject:\/ WARN/ }
     end
 
     it "send test mail" do
