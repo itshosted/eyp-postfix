@@ -9,7 +9,7 @@ define postfix::headercheck (
 
   if(!defined(Concat['/etc/postfix/sender_canonical_maps']))
   {
-    concat { '/etc/postfix/header_checks':
+    concat { "${postfix::params::baseconf}/header_checks":
       ensure  => 'present',
       owner   => 'root',
       group   => 'root',
@@ -18,8 +18,8 @@ define postfix::headercheck (
       notify  => Exec['reload postfix header_checks'],
     }
 
-    concat::fragment{ '/etc/postfix/sender_canonical_maps header':
-      target  => '/etc/postfix/sender_canonical_maps',
+    concat::fragment{ '/etc/postfix/header_checks header':
+      target  => "${postfix::params::baseconf}/header_checks",
       order   => '00',
       content => template("${module_name}/generic_header.erb"),
     }
@@ -32,7 +32,7 @@ define postfix::headercheck (
     }
 
     concat::fragment{ '/etc/postfix/main.cf header_checks':
-      target  => '/etc/postfix/main.cf',
+      target  => "${postfix::params::baseconf}/main.cf",
       order   => '62',
       content => "\n# header_checks\nheader_checks = hash:/etc/postfix/header_checks\n",
     }
