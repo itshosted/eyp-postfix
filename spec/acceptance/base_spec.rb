@@ -76,6 +76,7 @@ describe 'postfix class' do
       its(:content) { should match /queue_run_delay = 300/ }
       its(:content) { should match /minimal_backoff_time = 300/ }
       its(:content) { should match /maximal_backoff_time = 300/ }
+      its(:content) { should match /home_mailbox/ }
     end
 
     describe file('/etc/postfix/header_checks') do

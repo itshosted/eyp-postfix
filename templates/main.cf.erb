@@ -186,10 +186,11 @@ inet_protocols = ipv4
 #
 # See also below, section "REJECTING MAIL FOR UNKNOWN LOCAL USERS".
 #
-mydestination = <%= @mydestination.join(',') %>
+#	mail.$mydomain, www.$mydomain, ftp.$mydomain
 #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain,
-#	mail.$mydomain, www.$mydomain, ftp.$mydomain
+#
+mydestination = <%= @mydestination.join(',') %>
 
 # REJECTING MAIL FOR UNKNOWN LOCAL USERS
 #
@@ -272,8 +273,9 @@ unknown_local_recipient_reject_code = <%= @unknown_local_recipient_reject_code %
 # only the local machine.
 #
 #mynetworks_style = class
-mynetworks_style = <%= @mynetworks_style %>
 #mynetworks_style = host
+#
+mynetworks_style = <%= @mynetworks_style %>
 
 # Alternatively, you can specify the mynetworks list by hand, in
 # which case Postfix ignores the mynetworks_style setting.
@@ -421,9 +423,10 @@ smtp_generic_maps = hash:<%= @smtp_generic_maps %>
 # "postfix reload" to eliminate the delay.
 #
 #alias_maps = dbm:/etc/aliases
-alias_maps = hash:<%= @alias_maps %>
 #alias_maps = hash:/etc/aliases, nis:mail.aliases
 #alias_maps = netinfo:/aliases
+#
+alias_maps = hash:<%= @alias_maps %>
 
 # The alias_database parameter specifies the alias database(s) that
 # are built with "newaliases" or "sendmail -bi".  This is a separate
@@ -432,8 +435,9 @@ alias_maps = hash:<%= @alias_maps %>
 #
 #alias_database = dbm:/etc/aliases
 #alias_database = dbm:/etc/mail/aliases
-alias_database = hash:/etc/aliases
 #alias_database = hash:/etc/aliases, hash:/opt/majordomo/aliases
+#
+alias_database = hash:/etc/aliases
 
 # ADDRESS EXTENSIONS (e.g., user+foo)
 #
@@ -463,7 +467,6 @@ message_size_limit = <%= @message_size_limit %>
 # mailbox file is /var/spool/mail/user or /var/mail/user.  Specify
 # "Maildir/" for qmail-style delivery (the / is required).
 #
-#home_mailbox = Mailbox
 home_mailbox = <%= @home_mailbox %>
 
 # The mail_spool_directory parameter specifies the directory where
@@ -471,7 +474,6 @@ home_mailbox = <%= @home_mailbox %>
 # system type.
 #
 mail_spool_directory = <%= @mail_spool_directory %>
-#mail_spool_directory = /var/spool/mail
 
 # The mailbox_command parameter specifies the optional external
 # command to use instead of mailbox delivery. The command is run as
