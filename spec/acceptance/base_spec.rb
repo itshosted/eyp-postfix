@@ -30,6 +30,13 @@ describe 'postfix class' do
            smtpd_sasl_auth_enable      => true,
            smtpd_use_tls               => true,
            smtp_use_tls                => true,
+           queue_run_delay             => 300,
+           minimal_backoff_time        => 300,
+           maximal_backoff_time        => 300,
+        }
+
+        postfix::headercheck { '^Subject:':
+          action => 'WARN',
         }
 
       EOF
@@ -57,6 +64,7 @@ describe 'postfix class' do
     end
 
     describe file('/etc/postfix/main.cf') do
+      it { should be_file }
       its(:content) { should match /smtp_use_tls = yes/ }
       its(:content) { should match /smtpd_use_tls = yes/ }
       its(:content) { should match /disable_vrfy_command = yes/ }
@@ -65,6 +73,15 @@ describe 'postfix class' do
       its(:content) { should match /smtp_tls_exclude_ciphers = aNULL,eNULL,EXP,MD5,IDEA,KRB5,RC2,SEED,SRP/ }
       its(:content) { should match /smtpd_tls_mandatory_ciphers = medium/ }
       its(:content) { should match /tls_medium_cipherlist = AES128\+EECDH:AES128\+EDH/ }
+      its(:content) { should match /queue_run_delay = 300/ }
+      its(:content) { should match /minimal_backoff_time = 300/ }
+      its(:content) { should match /maximal_backoff_time = 300/ }
+      its(:content) { should match /home_mailbox/ }
+    end
+
+    describe file('/etc/postfix/header_checks') do
+      it { should be_file }
+      its(:content) { should match /\/\^Subject:\/ WARN/ }
     end
 
     it "send test mail" do

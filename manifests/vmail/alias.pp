@@ -31,7 +31,7 @@ define postfix::vmail::alias(
       group   => 'root',
       mode    => '0644',
       require => Package[$postfix::params::package_name],
-      notify  => Exec["reload postfix aliases ${instance_name}"],
+      notify  => Exec[["reload postfix aliases ${instance_name}", "reload postfix virtual_alias_maps regex ${instance_name}"]],
     }
 
     concat::fragment{ "/etc/postfix/${instance_name}_aliases header":
@@ -64,7 +64,7 @@ define postfix::vmail::alias(
       group   => 'root',
       mode    => '0644',
       require => Package[$postfix::params::package_name],
-      notify  => Exec["reload postfix virtual_alias_maps regex ${instance_name}"],
+      notify  => Exec[["reload postfix virtual_alias_maps regex ${instance_name}", "reload postfix aliases ${instance_name}"]],
     }
 
     concat::fragment { "${postfix::params::baseconf}/${instance_name}_aliases_regex header":
