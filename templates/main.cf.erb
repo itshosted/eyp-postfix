@@ -1,5 +1,5 @@
 #
-# puppet managed file - do NOT edit
+# puppet managed file
 #
 
 <% if defined?(@compatibility_level) -%>
@@ -581,18 +581,6 @@ mail_spool_directory = <%= @mail_spool_directory %>
 #
 # The controls listed here are only a very small subset. The file
 # SMTPD_ACCESS_README provides an overview.
-
-# The header_checks parameter specifies an optional table with patterns
-# that each logical message header is matched against, including
-# headers that span multiple physical lines.
-#
-# By default, these patterns also apply to MIME headers and to the
-# headers of attached messages. With older Postfix versions, MIME and
-# attached message headers were treated as body text.
-#
-# For details, see "man header_checks".
-#
-#header_checks = regexp:/etc/postfix/header_checks
 
 # FAST ETRN SERVICE
 #
