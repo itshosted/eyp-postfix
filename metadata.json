@@ -1,6 +1,6 @@
 {
   "name": "eyp-postfix",
-  "version": "0.2.36",
+  "version": "0.2.37",
   "author": "eyp",
   "summary": "postfix management - relay or multidomain mailserver",
   "license": "Apache-2.0",
@@ -40,7 +40,7 @@
     },
     {
       "operatingsystem": "SLES",
-      "operatingsystemrelease": [ "11.3", "12.3" ]
+      "operatingsystemrelease": [ "11.3", "12.3", "12.4" ]
     }
   ],
   "requirements": [

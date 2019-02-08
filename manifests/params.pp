@@ -162,7 +162,7 @@ class postfix::params {
             {
               $postfix_ver='2.9.4'
             }
-            '12.3':
+            /^12.[34]/:
             {
               $postfix_ver='3.2.0'
             }
