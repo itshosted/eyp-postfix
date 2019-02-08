@@ -2,11 +2,12 @@
 
 ## 0.2.37
 
-* added queu related variables:
+* added queue related variables:
   - queue_run_delay
   - minimal_backoff_time
   - maximal_backoff_time
 * added **postfix::headercheck**
+* added SLES 12.4 support
 
 ## 0.2.36
 
