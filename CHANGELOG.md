@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.2.38
+
+* Added **RHEL 8** support
+
 ## 0.2.37
 
 * added queue related variables:
@@ -19,7 +23,7 @@
 
 ## 0.2.34
 
-* added SLES 12.3 support
+* added **SLES 12.3** support
 
 ## 0.2.33
 
@@ -33,7 +37,7 @@
 
 ## 0.2.31
 
-* added Ubuntu 18.04 support
+* added **Ubuntu 18.04** support
 * added **compatibility_level** variable
 * variable **mynetworks_style** set to **subnet** by default across postfix versions
 

@@ -44,6 +44,11 @@ class postfix::params {
           $manage_mastercf_default=true
           $postfix_ver='2.10.1'
         }
+        /^7.*$/:
+        {
+          $manage_mastercf_default=true
+          $postfix_ver='3.3.1'
+        }
         default: { fail('Unsupported RHEL/CentOS version!')  }
       }
     }
