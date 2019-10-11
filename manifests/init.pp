@@ -50,7 +50,7 @@ class postfix (
                 $in_flow_delay                       = '1s',
                 $setgid_group                        = $postfix::params::setgid_group_default,
                 $readme_directory                    = $postfix::params::readme_directory_default,
-                $smtp_fallback_relay                 = undef,
+                $smtp_fallback_relay                 = [],
                 $postfix_username_uid                = $postfix_username_uid_default,
                 $postfix_username_gid                = $postfix_username_gid_default,
                 $add_default_smtpd_instance          = true,
