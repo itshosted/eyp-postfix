@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 0.2.38
+## 0.2.39
 
 * Added **RHEL 8** support
 
