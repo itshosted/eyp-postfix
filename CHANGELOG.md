@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.2.40
+
+* Added master.cf options for **RHEL 8**
+
 ## 0.2.39
 
 * Added **RHEL 8** support
