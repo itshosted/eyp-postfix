@@ -644,7 +644,7 @@ class postfix::mastercf(
             chroot  => 'n',
             command => 'smtp',
             order   => '15',
-            args    => '-o syslog_name=postfix/$service_name',
+            opts    => { 'syslog_name': 'postfix/$service_name' },
           }
 
           # showq     unix  n       -       n       -       -       showq

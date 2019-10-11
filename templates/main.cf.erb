@@ -346,7 +346,7 @@ mynetworks = <%= @mynetworks.join(",") %>
 relayhost = <% if ! @relayhost_mx_lookup %>[<% end %><%= @relayhost %><% if ! @relayhost_mx_lookup %>]<% end %>
 <% end -%>
 
-<% if defined?(@smtp_fallback_relay) -%>
+<% if @smtp_fallback_relay.any? -%>
 smtp_fallback_relay = <%= @smtp_fallback_relay.join(',') %>
 <% end -%>
 

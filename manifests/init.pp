@@ -93,40 +93,7 @@ class postfix (
     path => '/bin:/sbin:/usr/bin:/usr/sbin',
   }
 
-  validate_array($mynetworks)
-
-  if($biff)
-  {
-    validate_bool($biff)
-  }
-
-  if($append_dot_mydomain)
-  {
-    validate_bool($append_dot_mydomain)
-  }
-
-  if($readme_directory)
-  {
-    validate_string($readme_directory)
-  }
-
-  validate_string($myorigin)
-
-  validate_string($mydomain)
-
-  if($recipient_delimiter)
-  {
-    validate_string($recipient_delimiter)
-  }
-
-  validate_array($mydestination)
-
-  if($smtp_fallback_relay!=undef)
-  {
-    validate_array($smtp_fallback_relay)
-  }
-
-  validate_re($home_mailbox, [ '^Maildir/$', '^Mailbox$', '^$' ], 'Not a supported home_mailbox - valid values: Mailbox, Maildir/ or empty string')
+  # validate_re($home_mailbox, [ '^Maildir/$', '^Mailbox$', '^$' ], 'Not a supported home_mailbox - valid values: Mailbox, Maildir/ or empty string')
 
   user { $postfix_username:
     ensure  => 'present',
