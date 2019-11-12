@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.2.41
+
+* added **smtp_tls_mandatory_protocols**
+
 ## 0.2.40
 
 * Added master.cf options for **RHEL 8**

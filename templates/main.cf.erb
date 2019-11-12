@@ -814,6 +814,10 @@ smtpd_tls_cert_file=/etc/pki/tls/certs/postfix.pem
 smtpd_tls_key_file=/etc/pki/tls/private/postfix-key.key
 <%- end -%>
 
+<% if @smtp_tls_mandatory_protocols.any? -%>
+smtp_tls_mandatory_protocols = <%= @smtp_tls_mandatory_protocols.join(',') %>
+<% end -%>
+
 <%- if defined?(@biff) -%>
 biff = <%= scope.function_bool2yesno([@biff]) %>
 <%- end -%>
