@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.2.41
+
+* added postfix settings:
+  - **smtp_tls_mandatory_protocols**
+  - **smtp_tls_ca_path** for **smtp_tls_CApath**
+
 ## 0.2.40
 
 * Added master.cf options for **RHEL 8**
