@@ -81,6 +81,7 @@ class postfix (
                 $smtpd_use_tls                       = false,
                 $smtpd_tls_protocols                 = [ '!SSLv2', '!SSLv3' ],
                 $smtp_tls_mandatory_protocols        = [],
+                $smtp_tls_ca_path                    = undef,
                 $smtp_use_tls                        = false,
                 $smtp_tls_exclude_ciphers            = [],
                 $smtpd_tls_mandatory_ciphers         = undef,

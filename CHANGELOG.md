@@ -2,7 +2,9 @@
 
 ## 0.2.41
 
-* added **smtp_tls_mandatory_protocols**
+* added postfix settings:
+  - **smtp_tls_mandatory_protocols**
+  - **smtp_tls_ca_path** for **smtp_tls_CApath**
 
 ## 0.2.40
 
