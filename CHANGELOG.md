@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.2.42
+
+* setting sha256 as default digest for self signed certificates
+
 ## 0.2.41
 
 * added postfix settings:

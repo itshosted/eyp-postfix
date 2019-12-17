@@ -41,6 +41,7 @@ class postfix (
                 $relayhost_mx_lookup                 = false,
                 $generatecert                        = false,
                 $subjectselfsigned                   = undef,
+                $selfsigned_digest                   = 'sha256',
                 $tlscert                             = undef,
                 $tlspk                               = undef,
                 $install_mailclient                  = true,
@@ -140,7 +141,7 @@ class postfix (
         }
 
         exec { 'openssl cert':
-          command => "openssl req -new -key /etc/pki/tls/private/postfix-key.key -subj '${subjectselfsigned}' | openssl x509 -req -days 10000 -signkey /etc/pki/tls/private/postfix-key.key -out /etc/pki/tls/certs/postfix.pem",
+          command => "openssl req -new -${selfsigned_digest} -key /etc/pki/tls/private/postfix-key.key -subj '${subjectselfsigned}' | openssl x509 -req -days 10000 -signkey /etc/pki/tls/private/postfix-key.key -out /etc/pki/tls/certs/postfix.pem",
           unless  => "openssl x509 -in /etc/pki/tls/certs/postfix.pem -noout -subject | grep '${subjectselfsigned}'",
           notify  => Class['postfix::service'],
           require => Exec['openssl pk'],
