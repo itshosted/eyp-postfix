@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.2.43
+
+* added **Ubuntu 20.04** support
+
 ## 0.2.42
 
 * setting sha256 as default digest for self signed certificates
