@@ -77,10 +77,13 @@ class postfix (
                 $smtpd_helo_required                 = false,
                 $disable_vrfy_command                = false,
                 $smtp_sasl_auth_enable               = false,
+                $smtp_sasl_password_maps             = "${postfix::params::baseconf}/sasl_passwd",
                 $smtp_sasl_security_options          = [ 'noplaintext', 'noanonymous' ],
+                $smtp_sasl_tls_security_options      = [ 'noplaintext', 'noanonymous' ],
                 $smtpd_sasl_auth_enable              = false,
                 $smtpd_use_tls                       = false,
                 $smtpd_tls_protocols                 = [ '!SSLv2', '!SSLv3' ],
+                $smtp_tls_security_level             = 'may',
                 $smtp_tls_mandatory_protocols        = [],
                 $smtp_tls_ca_path                    = undef,
                 $smtp_use_tls                        = false,
@@ -90,6 +93,7 @@ class postfix (
                 $queue_run_delay                     = undef,
                 $minimal_backoff_time                = undef,
                 $maximal_backoff_time                = undef,
+                $header_size_limit                   = '102400',
               ) inherits postfix::params {
 
   Exec {
@@ -273,6 +277,32 @@ class postfix (
     target  => $smtp_generic_maps,
     order   => '00',
     content => template("${module_name}/header.erb"),
+  }
+
+  #
+  # smtp_sasl_password_maps
+  #
+
+  exec { 'reload postfix smtp_sasl_password_maps':
+    command     => "postmap ${smtp_sasl_password_maps}",
+    refreshonly => true,
+    notify      => Class['postfix::service'],
+    require     => [ Package[$postfix::params::package_name], Concat[$smtp_sasl_password_maps] ],
+  }
+
+  concat { $smtp_sasl_password_maps:
+    ensure  => 'present',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0600',
+    require => Package[$postfix::params::package_name],
+    notify  => Exec['reload postfix smtp_sasl_password_maps'],
+  }
+
+  concat::fragment{ "${smtp_sasl_password_maps} header":
+    target  => $smtp_sasl_password_maps,
+    order   => '00',
+    content => template("${module_name}/sasl_password_map.erb"),
   }
 
   #
