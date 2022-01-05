@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 0.2.44
+
+* added postfix settings:
+  - **smtp_sasl_password_maps**
+  - **smtp_sasl_tls_security_options**
+  - **smtp_tls_security_level**
+  - **header_size_limit**
+
 ## 0.2.43
 
 * added **Ubuntu 20.04** support

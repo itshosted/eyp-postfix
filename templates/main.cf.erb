@@ -754,6 +754,10 @@ smtpd_sasl_auth_enable = <%= scope.function_bool2yesno([@smtpd_sasl_auth_enable]
 
 <% if(@smtp_sasl_auth_enable) -%>
 smtp_sasl_auth_enable = <%= scope.function_bool2yesno([@smtp_sasl_auth_enable]) %>
+smtp_sasl_password_maps = hash:<%= @smtp_sasl_password_maps %>
+	<%- if @smtp_sasl_tls_security_options.any? -%>
+smtp_sasl_tls_security_options = <%= @smtp_sasl_tls_security_options.join(',') %>
+	<%- end -%>
 	<%- if @smtp_sasl_security_options.any? -%>
 smtp_sasl_security_options = <%= @smtp_sasl_security_options.join(',') %>
 	<%- end -%>
@@ -784,7 +788,7 @@ smtpd_tls_mandatory_ciphers = <%= @smtpd_tls_mandatory_ciphers %>
 
 # enable opportunistic TLS support in the SMTP server and client
 smtpd_tls_security_level = may
-smtp_tls_security_level = may
+smtp_tls_security_level = <%= @smtp_tls_security_level %>
 
 # use 0 for Postfix >= 2.9, and 1 for earlier versions
 <% if scope.function_versioncmp([scope.lookupvar('postfix::params::postfix_ver'), '2.9']) >= 0 -%>
@@ -837,3 +841,4 @@ append_dot_mydomain = <%= scope.function_bool2yesno([@append_dot_mydomain]) %>
 default_process_limit = <%= @default_process_limit %>
 smtpd_client_connection_count_limit = <%= @smtpd_client_connection_count_limit %>
 smtpd_client_connection_rate_limit = <%= @smtpd_client_connection_rate_limit %>
+header_size_limit = <%= @header_size_limit %>
