@@ -38,6 +38,7 @@ class postfix (
                 $opportunistictls                    = false,
                 $recipient_delimiter                 = undef,
                 $relayhost                           = undef,
+                $relayport                           = undef,
                 $relayhost_mx_lookup                 = false,
                 $generatecert                        = false,
                 $subjectselfsigned                   = undef,

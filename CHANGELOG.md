@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.2.45
+
+* added **relayport** variable to specify a port for **relayhost** when **relayhost_mx_lookup** is false
+
 ## 0.2.44
 
 * added postfix settings:
