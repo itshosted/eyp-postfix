@@ -30,7 +30,7 @@ class postfix (
                 $myhostname                          = $::hostname,
                 $mynetworks                          = [ '127.0.0.1' ],
                 $myorigin                            = $::domain,
-                $inetinterfaces                      = '127.0.0.1',
+                $inetinterfaces                      = 'loopback-only',
                 $mail_spool_directory                = '/var/mail',
                 $append_dot_mydomain                 = undef,
                 $biff                                = false,
