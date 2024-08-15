@@ -142,6 +142,12 @@ class postfix::params {
               $postfix_ver='3.6.4'
               $compatibility_level_default=2
             }
+            /^24.*$/:
+            {
+              $daemon_directory_default='/usr/lib/postfix/sbin'
+              $postfix_ver='3.6.4'
+              $compatibility_level_default=2
+            }
             default: { fail("Unsupported Ubuntu version! - ${::operatingsystemrelease}")  }
           }
         }
