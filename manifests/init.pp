@@ -98,6 +98,8 @@ class postfix (
                 $minimal_backoff_time                = undef,
                 $maximal_backoff_time                = undef,
                 $header_size_limit                   = '102400',
+                $smtpd_sasl_type                     = undef,
+                $smtpd_sasl_path                     = undef,
               ) inherits postfix::params {
 
   Exec {

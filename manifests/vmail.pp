@@ -11,31 +11,30 @@
 # amavis-new
 # http://forums.sentora.org/showthread.php?tid=1132
 #
-class postfix::vmail(
-                      $mailbox_base                 = '/var/vmail',
-                      $setup_dovecot                = true,
-                      #TODO: rewrite
-                      $smtpd_recipient_restrictions = [ 'permit_inet_interfaces',
-                                                        'permit_mynetworks',
-                                                        'reject_authenticated_sender_login_mismatch',
-                                                        'permit_sasl_authenticated',
-                                                        'reject_unauth_destination',
-                                                        'reject'
-                                                        ],
-                      $smtpd_relay_restrictions     = [ 'permit_inet_interfaces',
-                                                        'permit_mynetworks',
-                                                        'reject_authenticated_sender_login_mismatch',
-                                                        'permit_sasl_authenticated',
-                                                        'reject_unauth_destination',
-                                                        'reject'
-                                                        ],
-                    ) inherits postfix::params {
+class postfix::vmail (
+  $mailbox_base                 = '/var/vmail',
+  $setup_dovecot                = true,
+  #TODO: rewrite
+  $smtpd_recipient_restrictions = ['permit_inet_interfaces',
+    'permit_mynetworks',
+    'reject_authenticated_sender_login_mismatch',
+    'permit_sasl_authenticated',
+    'reject_unauth_destination',
+    'reject',
+  ],
+  $smtpd_relay_restrictions     = ['permit_inet_interfaces',
+    'permit_mynetworks',
+    'reject_authenticated_sender_login_mismatch',
+    'permit_sasl_authenticated',
+    'reject_unauth_destination',
+    'reject',
+  ],
+) inherits postfix::params {
   Exec {
     path => '/bin:/sbin:/usr/bin:/usr/sbin',
   }
 
-  if($setup_dovecot)
-  {
+  if($setup_dovecot) {
     class { 'dovecot':
       default_login_user => $postfix::postfix_username,
       first_valid_uid    => $postfix::postfix_username_uid,
@@ -89,7 +88,7 @@ class postfix::vmail(
   # vmail base config
   #
 
-  concat::fragment{ '/etc/postfix/main.cf vmail base':
+  concat::fragment { '/etc/postfix/main.cf vmail base':
     target  => '/etc/postfix/main.cf',
     order   => '50',
     content => template("${module_name}/vmail/vmail.erb"),
@@ -99,7 +98,7 @@ class postfix::vmail(
   # virtual mailboxes
   #
 
-  concat::fragment{ '/etc/postfix/main.cf virtual_mailbox_maps':
+  concat::fragment { '/etc/postfix/main.cf virtual_mailbox_maps':
     target  => '/etc/postfix/main.cf',
     order   => '52',
     content => "\n# virtual mailboxes\nvirtual_mailbox_maps=hash:/etc/postfix/vmail_mailbox\n",
@@ -114,7 +113,7 @@ class postfix::vmail(
     notify  => Exec['reload postfix mailbox'],
   }
 
-  concat::fragment{ '/etc/postfix/vmail_mailbox header':
+  concat::fragment { '/etc/postfix/vmail_mailbox header':
     target  => "${postfix::params::baseconf}/vmail_mailbox",
     order   => '00',
     content => template("${module_name}/vmail/mailbox/header.erb"),
@@ -124,7 +123,7 @@ class postfix::vmail(
     command     => "postmap ${postfix::params::baseconf}/vmail_mailbox",
     refreshonly => true,
     notify      => Class['postfix::service'],
-    require     => [ Package[$postfix::params::package_name], Concat["${postfix::params::baseconf}/vmail_mailbox"] ],
+    require     => [Package[$postfix::params::package_name], Concat["${postfix::params::baseconf}/vmail_mailbox"]],
   }
 
   #
@@ -132,7 +131,7 @@ class postfix::vmail(
   #
   #virtual_mailbox_domains=hash:/etc/postfix/vmail_domains
 
-  concat::fragment{ '/etc/postfix/main.cf virtual_mailbox_domains':
+  concat::fragment { '/etc/postfix/main.cf virtual_mailbox_domains':
     target  => '/etc/postfix/main.cf',
     order   => '53',
     content => "\n# virtual domains\nvirtual_mailbox_domains=hash:/etc/postfix/vmail_domains\n",
@@ -147,7 +146,7 @@ class postfix::vmail(
     notify  => Exec['reload postfix domains'],
   }
 
-  concat::fragment{ '/etc/postfix/vmail_domains header':
+  concat::fragment { '/etc/postfix/vmail_domains header':
     target  => "${postfix::params::baseconf}/vmail_domains",
     order   => '00',
     content => template("${module_name}/vmail/domains/header.erb"),
@@ -157,14 +156,14 @@ class postfix::vmail(
     command     => "postmap ${postfix::params::baseconf}/vmail_domains",
     refreshonly => true,
     notify      => Class['postfix::service'],
-    require     => [ Package[$postfix::params::package_name], Concat["${postfix::params::baseconf}/vmail_domains"] ],
+    require     => [Package[$postfix::params::package_name], Concat["${postfix::params::baseconf}/vmail_domains"]],
   }
 
   #
   # smtpd restrictions
   #
 
-  concat::fragment{ '/etc/postfix/main.cf smtpd_restrictions':
+  concat::fragment { '/etc/postfix/main.cf smtpd_restrictions':
     target  => '/etc/postfix/main.cf',
     order   => '55',
     content => template("${module_name}/smtpd_restrictions.erb"),
