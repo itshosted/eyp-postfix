@@ -808,6 +808,16 @@ smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 <%- end -%>
 
+<%- if(@tls_cert_file)  -%>
+#TLS cert
+smtpd_tls_cert_file=<%= @tls_cert_file %>
+<%- end -%>
+
+<%- if(@tls_key_file) -%>
+# TLS pk
+smtpd_tls_key_file=<%= @tls_key_file %>
+<%- end -%>
+
 <%- if(@tlscert) or (@subjectselfsigned) -%>
 #TLS cert
 smtpd_tls_cert_file=/etc/pki/tls/certs/postfix.pem

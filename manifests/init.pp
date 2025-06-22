@@ -43,6 +43,8 @@ class postfix (
                 $generatecert                        = false,
                 $subjectselfsigned                   = undef,
                 $selfsigned_digest                   = 'sha256',
+                $tls_cert_file                       = undef,
+                $tls_key_file                        = undef,
                 $tlscert                             = undef,
                 $tlspk                               = undef,
                 $install_mailclient                  = true,
