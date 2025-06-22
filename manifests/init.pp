@@ -169,7 +169,7 @@ class postfix (
         fail('you need to enable selfsigned certificates using the variable generatecert')
       }
 
-      if($tlscert==undef) or ($tlspk==undef) or ($opportunistictls==undef)
+      if($tlscert==undef) or ($tlspk==undef)
       {
         fail("everytime you forget required a TLS file, God kills a kitten - OTLS(${opportunistictls}) - CERT(${tlscert}) - KEY(${tlspk}) - please think of the kittens")
       }
