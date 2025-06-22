@@ -35,6 +35,7 @@ class postfix (
                 $append_dot_mydomain                 = undef,
                 $biff                                = false,
                 $ipv6                                = false,
+                $certbot                             = false,
                 $opportunistictls                    = false,
                 $recipient_delimiter                 = undef,
                 $relayhost                           = undef,
@@ -121,6 +122,7 @@ class postfix (
     require => Package[$postfix::params::package_name],
   }
 
+  if (!$certbot){
   if($tlscert) or ($tlspk) or ($opportunistictls)
   {
 
@@ -169,7 +171,7 @@ class postfix (
         fail('you need to enable selfsigned certificates using the variable generatecert')
       }
 
-      if($tlscert==undef) or ($tlspk==undef)
+      if($tlscert==undef) or ($tlspk==undef) or ($opportunistictls==undef)
       {
         fail("everytime you forget required a TLS file, God kills a kitten - OTLS(${opportunistictls}) - CERT(${tlscert}) - KEY(${tlspk}) - please think of the kittens")
       }
@@ -199,7 +201,7 @@ class postfix (
       }
     }
   }
-
+}
   if($install_mailclient)
   {
     package { $postfix::params::mailclient:
