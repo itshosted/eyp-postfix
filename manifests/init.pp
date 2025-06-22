@@ -122,86 +122,88 @@ class postfix (
     require => Package[$postfix::params::package_name],
   }
 
-  if (!$certbot){
-  if($tlscert) or ($tlspk) or ($opportunistictls)
-  {
-
-    exec { 'postfix mkdir /etc/pki/tls/private':
-      command => 'mkdir -p /etc/pki/tls/private',
-      creates => '/etc/pki/tls/private',
-    }
-
-    exec { 'postfix mkdir /etc/pki/tls/certs':
-      command => 'mkdir -p /etc/pki/tls/certs',
-      creates => '/etc/pki/tls/certs',
-    }
-
-    exec { 'eyp-postfix which openssl':
-      command => 'which openssl',
-      unless  => 'which openssl',
-      require => Exec[ ['postfix mkdir /etc/pki/tls/certs', 'postfix mkdir /etc/pki/tls/certs' ] ]
-    }
-
-    if($generatecert)
+  if ($certbot == false) {
+    if($tlscert) or ($tlspk) or ($opportunistictls)
     {
-      if($subjectselfsigned)
-      {
-        exec { 'openssl pk':
-          command => 'openssl genrsa -out /etc/pki/tls/private/postfix-key.key 2048',
-          creates => '/etc/pki/tls/private/postfix-key.key',
-          require => Exec['eyp-postfix which openssl'],
-        }
 
-        exec { 'openssl cert':
-          command => "openssl req -new -${selfsigned_digest} -key /etc/pki/tls/private/postfix-key.key -subj '${subjectselfsigned}' | openssl x509 -req -days 10000 -signkey /etc/pki/tls/private/postfix-key.key -out /etc/pki/tls/certs/postfix.pem",
-          unless  => "openssl x509 -in /etc/pki/tls/certs/postfix.pem -noout -subject | grep '${subjectselfsigned}'",
-          notify  => Class['postfix::service'],
-          require => Exec['openssl pk'],
+      exec { 'postfix mkdir /etc/pki/tls/private':
+        command => 'mkdir -p /etc/pki/tls/private',
+        creates => '/etc/pki/tls/private',
+      }
+
+      exec { 'postfix mkdir /etc/pki/tls/certs':
+        command => 'mkdir -p /etc/pki/tls/certs',
+        creates => '/etc/pki/tls/certs',
+      }
+
+      exec { 'eyp-postfix which openssl':
+        command => 'which openssl',
+        unless  => 'which openssl',
+        require => Exec[ ['postfix mkdir /etc/pki/tls/certs', 'postfix mkdir /etc/pki/tls/certs' ] ]
+      }
+
+      if($generatecert)
+      {
+        if($subjectselfsigned)
+        {
+          exec { 'openssl pk':
+            command => 'openssl genrsa -out /etc/pki/tls/private/postfix-key.key 2048',
+            creates => '/etc/pki/tls/private/postfix-key.key',
+            require => Exec['eyp-postfix which openssl'],
+          }
+
+          exec { 'openssl cert':
+            command => "openssl req -new -${selfsigned_digest} -key /etc/pki/tls/private/postfix-key.key -subj '${subjectselfsigned}' | openssl x509 -req -days 10000 -signkey /etc/pki/tls/private/postfix-key.key -out /etc/pki/tls/certs/postfix.pem",
+            unless  => "openssl x509 -in /etc/pki/tls/certs/postfix.pem -noout -subject | grep '${subjectselfsigned}'",
+            notify  => Class['postfix::service'],
+            require => Exec['openssl pk'],
+          }
+        }
+        else
+        {
+          fail('to generate a selfsigned certificate I need a subject (variable subjectselfsigned)')
         }
       }
       else
       {
-        fail('to generate a selfsigned certificate I need a subject (variable subjectselfsigned)')
-      }
-    }
-    else
-    {
-      if ($subjectselfsigned)
-      {
-        fail('you need to enable selfsigned certificates using the variable generatecert')
-      }
-
-      if($tlscert==undef) or ($tlspk==undef) or ($opportunistictls==undef)
-      {
-        fail("everytime you forget required a TLS file, God kills a kitten - OTLS(${opportunistictls}) - CERT(${tlscert}) - KEY(${tlspk}) - please think of the kittens")
-      }
-      else
-      {
-        file { '/etc/pki/tls/private/postfix-key.key':
-          ensure  => present,
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0644',
-          require => Exec['eyp-postfix which openssl'],
-          notify  => Class['postfix::service'],
-          audit   => 'content',
-          source  => $tlspk
+        if ($subjectselfsigned)
+        {
+          fail('you need to enable selfsigned certificates using the variable generatecert')
         }
 
-        file { '/etc/pki/tls/certs/postfix.pem':
-          ensure  => present,
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0644',
-          require => Exec['eyp-postfix which openssl'],
-          notify  => Class['postfix::service'],
-          audit   => 'content',
-          source  => $tlscert
+        if($tlscert==undef) or ($tlspk==undef) or ($opportunistictls==undef)
+        {
+          fail("everytime you forget required a TLS file, God kills a kitten - OTLS(${opportunistictls}) - CERT(${tlscert}) - KEY(${tlspk}) - please think of the kittens")
+        }
+        else
+        {
+          file { '/etc/pki/tls/private/postfix-key.key':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            require => Exec['eyp-postfix which openssl'],
+            notify  => Class['postfix::service'],
+            audit   => 'content',
+            source  => $tlspk
+          }
+
+          file { '/etc/pki/tls/certs/postfix.pem':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0644',
+            require => Exec['eyp-postfix which openssl'],
+            notify  => Class['postfix::service'],
+            audit   => 'content',
+            source  => $tlscert
+          }
         }
       }
     }
   }
-}
+
+
   if($install_mailclient)
   {
     package { $postfix::params::mailclient:
