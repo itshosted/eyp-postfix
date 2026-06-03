@@ -1,14 +1,13 @@
 define postfix::headercheck (
-                              $action,
-                              $regex = $name,
-                              $order    = '42',
-                            ) {
+  $action,
+  $regex = $name,
+  $order    = '42',
+) {
   Exec {
     path => '/bin:/sbin:/usr/bin:/usr/sbin',
   }
 
-  if(!defined(Concat['/etc/postfix/sender_canonical_maps']))
-  {
+  if(!defined(Concat['/etc/postfix/sender_canonical_maps'])) {
     concat { "${postfix::params::baseconf}/header_checks":
       ensure  => 'present',
       owner   => 'root',
@@ -18,7 +17,7 @@ define postfix::headercheck (
       notify  => Exec['reload postfix header_checks'],
     }
 
-    concat::fragment{ '/etc/postfix/header_checks header':
+    concat::fragment { '/etc/postfix/header_checks header':
       target  => "${postfix::params::baseconf}/header_checks",
       order   => '00',
       content => template("${module_name}/generic_header.erb"),
@@ -31,17 +30,16 @@ define postfix::headercheck (
       require     => Package[$postfix::params::package_name],
     }
 
-    concat::fragment{ '/etc/postfix/main.cf header_checks':
+    concat::fragment { '/etc/postfix/main.cf header_checks':
       target  => "${postfix::params::baseconf}/main.cf",
       order   => '62',
       content => "\n# header_checks\nheader_checks = hash:/etc/postfix/header_checks\n",
     }
   }
 
-  concat::fragment{ "/etc/postfix/header_checks ${regex} ${action}":
+  concat::fragment { "/etc/postfix/header_checks ${regex} ${action}":
     target  => '/etc/postfix/header_checks',
     order   => $order,
     content => template("${module_name}/header_checks.erb"),
   }
-
 }

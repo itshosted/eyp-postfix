@@ -1,28 +1,25 @@
-define postfix::vmail::alias(
-                              $aliasto                     = [],
-                              $aliasfrom                   = $name,
-                              $order                       = '42',
-                              $regex                       = false,
-                              $add_config_default_instance = true,
-                              $instance_name               = 'vmail',
-                            ) {
-
+define postfix::vmail::alias (
+  $aliasto                     = [],
+  $aliasfrom                   = $name,
+  $order                       = '42',
+  $regex                       = false,
+  $add_config_default_instance = true,
+  $instance_name               = 'vmail',
+) {
   Exec {
     path => '/bin:/sbin:/usr/bin:/usr/sbin',
   }
 
-  if(!defined(Concat["${postfix::params::baseconf}/${instance_name}_aliases"]))
-  {
+  if(!defined(Concat["${postfix::params::baseconf}/${instance_name}_aliases"])) {
     #
     # virtual aliases
     #
-    if($add_config_default_instance)
-    {
-      concat::fragment{ "/etc/postfix/main.cf virtual_alias_maps ${instance_name}":
+    if($add_config_default_instance) {
+      concat::fragment { "/etc/postfix/main.cf virtual_alias_maps ${instance_name}":
         target  => '/etc/postfix/main.cf',
         order   => '51',
         content => "\n# virtual aliases\nvirtual_alias_maps=hash:${postfix::params::baseconf}/${instance_name}_aliases, regexp:${postfix::params::baseconf}/${instance_name}_aliases_regex\n",
-      }
+      }å
     }
 
     concat { "${postfix::params::baseconf}/${instance_name}_aliases":
@@ -34,7 +31,7 @@ define postfix::vmail::alias(
       notify  => Exec[["reload postfix aliases ${instance_name}", "reload postfix virtual_alias_maps regex ${instance_name}"]],
     }
 
-    concat::fragment{ "/etc/postfix/${instance_name}_aliases header":
+    concat::fragment { "/etc/postfix/${instance_name}_aliases header":
       target  => "${postfix::params::baseconf}/${instance_name}_aliases",
       order   => '00',
       content => template("${module_name}/vmail/aliases/header.erb"),
@@ -44,7 +41,7 @@ define postfix::vmail::alias(
       command     => "postmap ${postfix::params::baseconf}/${instance_name}_aliases",
       refreshonly => true,
       notify      => Class['postfix::service'],
-      require     => [ Package[$postfix::params::package_name], Concat["${postfix::params::baseconf}/${instance_name}_aliases"] ],
+      require     => [Package[$postfix::params::package_name], Concat["${postfix::params::baseconf}/${instance_name}_aliases"]],
     }
 
     #
@@ -74,16 +71,14 @@ define postfix::vmail::alias(
     }
   }
 
-  if($regex)
-  {
+  if($regex) {
     $target_file="/etc/postfix/${instance_name}_aliases_regex"
   }
-  else
-  {
+  else {
     $target_file="/etc/postfix/${instance_name}_aliases"
   }
 
-  concat::fragment{ "/etc/postfix/${instance_name}_aliases ${aliasfrom} ${aliasto}":
+  concat::fragment { "/etc/postfix/${instance_name}_aliases ${aliasfrom} ${aliasto}":
     target  => $target_file,
     order   => $order,
     content => template("${module_name}/vmail/aliases/alias.erb"),

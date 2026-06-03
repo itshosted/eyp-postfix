@@ -3,7 +3,7 @@
 #
 
 <% if defined?(@compatibility_level) -%>
-	<%- if scope.function_versioncmp([scope.lookupvar('postfix::params::postfix_ver'), '3.0']) >= 0 -%>
+	<%- if scope.call_function('versioncmp', [@postfix_ver, '3.0']) >= 0 -%>
 compatibility_level = <%= @compatibility_level %>
 	<%- end -%>
 <% end -%>
@@ -98,7 +98,7 @@ myhostname = <%= @myhostname %>
 mydomain = <%= @mydomain %>
 <%- end -%>
 
-resolve_null_domain = <%= scope.function_bool2yesno([@resolve_null_domain]) %>
+resolve_null_domain = <%= scope.call_function('bool2yesno', [@resolve_null_domain]) %>
 
 
 # SENDING MAIL
@@ -606,7 +606,7 @@ mail_spool_directory = <%= @mail_spool_directory %>
 #
 #smtpd_banner = $myhostname ESMTP $mail_name
 #smtpd_banner = $myhostname ESMTP $mail_name ($mail_version)
-smtpd_banner = <%= scope.lookupvar('postfix::smtpdbanner') %>
+smtpd_banner = <%= @smtpdbanner %>
 
 
 <% if defined?(@smtpd_reject_footer) -%>
@@ -745,15 +745,15 @@ sample_directory = /usr/share/doc/postfix-2.6.6/samples
 
 # readme_directory: The location of the Postfix README files.
 #
-readme_directory = <%= scope.function_bool2yesno([@readme_directory]) %>
+readme_directory = <%= scope.call_function('bool2yesno', [@readme_directory]) %>
 
-smtpd_helo_required = <%= scope.function_bool2yesno([@smtpd_helo_required]) %>
-disable_vrfy_command = <%= scope.function_bool2yesno([@disable_vrfy_command]) %>
+smtpd_helo_required = <%= scope.call_function('bool2yesno', [@smtpd_helo_required]) %>
+disable_vrfy_command = <%= scope.call_function('bool2yesno', [@disable_vrfy_command]) %>
 
-smtpd_sasl_auth_enable = <%= scope.function_bool2yesno([@smtpd_sasl_auth_enable]) %>
+smtpd_sasl_auth_enable = <%= scope.call_function('bool2yesno', [@smtpd_sasl_auth_enable]) %>
 
 <% if(@smtp_sasl_auth_enable) -%>
-smtp_sasl_auth_enable = <%= scope.function_bool2yesno([@smtp_sasl_auth_enable]) %>
+smtp_sasl_auth_enable = <%= scope.call_function('bool2yesno', [@smtp_sasl_auth_enable]) %>
 smtp_sasl_password_maps = hash:<%= @smtp_sasl_password_maps %>
 	<%- if @smtp_sasl_tls_security_options.any? -%>
 smtp_sasl_tls_security_options = <%= @smtp_sasl_tls_security_options.join(',') %>
@@ -764,14 +764,14 @@ smtp_sasl_security_options = <%= @smtp_sasl_security_options.join(',') %>
 <% end -%>
 
 <% if(@smtpd_use_tls) -%>
-smtpd_use_tls = <%= scope.function_bool2yesno([@smtpd_use_tls]) %>
+smtpd_use_tls = <%= scope.call_function('bool2yesno', [@smtpd_use_tls]) %>
 	<%- if @smtpd_tls_protocols.any? -%>
 smtpd_tls_protocols = <%= @smtpd_tls_protocols.join(',') %>
 	<%- end -%>
 <% end -%>
 
 <% if(@smtp_use_tls) -%>
-smtp_use_tls = <%= scope.function_bool2yesno([@smtp_use_tls]) %>
+smtp_use_tls = <%= scope.call_function('bool2yesno', [@smtp_use_tls]) %>
 	<%- if @smtp_tls_exclude_ciphers.any? -%>
 smtp_tls_exclude_ciphers = <%= @smtp_tls_exclude_ciphers.join(',') %>
 	<%- end -%>
@@ -793,7 +793,7 @@ smtpd_tls_security_level = <%= @smtpd_tls_security_level %>
 smtp_tls_security_level = <%= @smtp_tls_security_level %>
 
 # use 0 for Postfix >= 2.9, and 1 for earlier versions
-<% if scope.function_versioncmp([scope.lookupvar('postfix::params::postfix_ver'), '2.9']) >= 0 -%>
+<% if scope.call_function('versioncmp', [@postfix_ver, '2.9']) >= 0 -%>
 smtpd_tls_loglevel = 0
 smtp_tls_loglevel = 0
 <% else -%>
@@ -839,12 +839,12 @@ smtp_tls_CApath = <%= @smtp_tls_ca_path %>
 <% end -%>
 
 <%- if defined?(@biff) -%>
-biff = <%= scope.function_bool2yesno([@biff]) %>
+biff = <%= scope.call_function('bool2yesno', [@biff]) %>
 <%- end -%>
 
 <%- if defined?(@append_dot_mydomain) -%>
 # appending .domain is the MUA's job.
-append_dot_mydomain = <%= scope.function_bool2yesno([@append_dot_mydomain]) %>
+append_dot_mydomain = <%= scope.call_function('bool2yesno', [@append_dot_mydomain]) %>
 <%- end -%>
 
 

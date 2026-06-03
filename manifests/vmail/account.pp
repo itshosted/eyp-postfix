@@ -1,18 +1,16 @@
-define postfix::vmail::account(
-                                $accountname,
-                                $domain,
-                                $password,
-                                $order = '42',
-                              ) {
-
+define postfix::vmail::account (
+  $accountname,
+  $domain,
+  $password,
+  $order = '42',
+) {
   Exec {
     path => '/bin:/sbin:/usr/bin:/usr/sbin',
   }
 
-  include ::postfix::vmail
+  include postfix::vmail
 
-  if($postfix::vmail::setup_dovecot)
-  {
+  if($postfix::vmail::setup_dovecot) {
     dovecot::account { "${accountname}@${domain}":
       password => $password,
     }
@@ -25,7 +23,7 @@ define postfix::vmail::account(
 
   file { "${postfix::vmail::mailbox_base}/${domain}/${accountname}":
     ensure   => 'directory',
-    owner    => $postfix::postfix_username,
+    owner    => $postfix::postfix_username,å
     group    => $postfix::postfix_username,
     mode     => '0770',
     selrange => 's0',
@@ -36,15 +34,14 @@ define postfix::vmail::account(
     before   => Class['postfix::service'],
   }
 
-  concat::fragment{ "/etc/postfix/vmail_mailbox ${accountname} ${domain}":
+  concat::fragment { "/etc/postfix/vmail_mailbox ${accountname} ${domain}":
     target  => '/etc/postfix/vmail_mailbox',
     order   => $order,
     content => template("${module_name}/vmail/mailbox/account.erb"),
   }
 
-  if(! defined(Concat::Fragment["/etc/postfix/vmail_domains ${domain}"]))
-  {
-    concat::fragment{ "/etc/postfix/vmail_domains ${domain}":
+  if(! defined(Concat::Fragment["/etc/postfix/vmail_domains ${domain}"])) {
+    concat::fragment { "/etc/postfix/vmail_domains ${domain}":
       target  => '/etc/postfix/vmail_domains',
       order   => $order,
       content => template("${module_name}/vmail/domains/domain.erb"),

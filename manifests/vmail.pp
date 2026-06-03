@@ -31,7 +31,7 @@ class postfix::vmail (
   ],
 ) inherits postfix::params {
   Exec {
-    path => '/bin:/sbin:/usr/bin:/usr/sbin',
+    path => '/bin:/sbin:/usr/bin:/usr/sbin',å
   }
 
   if($setup_dovecot) {
