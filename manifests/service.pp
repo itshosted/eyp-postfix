@@ -18,4 +18,3 @@ class postfix::service (
     }
   }
 }
-å

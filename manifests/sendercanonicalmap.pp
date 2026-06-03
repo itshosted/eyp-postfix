@@ -29,7 +29,7 @@ define postfix::sendercanonicalmap (
       notify      => Class['postfix::service'],
       require     => Package[$postfix::params::package_name],
     }
-å
+
     concat::fragment { '/etc/postfix/main.cf sender_canonical_maps':
       target  => '/etc/postfix/main.cf',
       order   => '61',

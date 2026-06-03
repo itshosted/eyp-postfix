@@ -10,4 +10,3 @@ define postfix::saslpasswordmap (
     content => template("${module_name}/sasl_password_map.erb"),
   }
 }
-å

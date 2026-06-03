@@ -19,7 +19,7 @@ define postfix::vmail::alias (
         target  => '/etc/postfix/main.cf',
         order   => '51',
         content => "\n# virtual aliases\nvirtual_alias_maps=hash:${postfix::params::baseconf}/${instance_name}_aliases, regexp:${postfix::params::baseconf}/${instance_name}_aliases_regex\n",
-      }å
+      }
     }
 
     concat { "${postfix::params::baseconf}/${instance_name}_aliases":

@@ -23,7 +23,7 @@ define postfix::vmail::account (
 
   file { "${postfix::vmail::mailbox_base}/${domain}/${accountname}":
     ensure   => 'directory',
-    owner    => $postfix::postfix_username,å
+    owner    => $postfix::postfix_username,
     group    => $postfix::postfix_username,
     mode     => '0770',
     selrange => 's0',

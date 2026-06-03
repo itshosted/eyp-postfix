@@ -12,4 +12,3 @@ define postfix::virtualaliasmapsregex (
     content => template("${module_name}/aliases/alias.erb"),
   }
 }
-å

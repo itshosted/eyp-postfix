@@ -31,7 +31,7 @@ define postfix::transport (
       group   => 'root',
       mode    => '0644',
       require => Package[$postfix::params::package_name],
-      notify  => Exec["reload postfix transport ${target}"],å
+      notify  => Exec["reload postfix transport ${target}"],
     }
 
     exec { "reload postfix transport ${target}":
